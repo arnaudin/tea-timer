@@ -33,7 +33,7 @@ Pick a brew, press Begin, and put the window wherever you can see it.
   slowly warms, so progress reads from across the room without looking at digits.
 - **Grounding prompts** that fade in and out during the brew — one line at a time,
   sixteen seconds apart.
-- **A full-viewport flash** and a synthesised singing-bowl chime at zero. Click
+- **A full-viewport flash** and a synthesized singing-bowl chime at zero. Click
   anywhere or press any key to dismiss.
 - **Resume after reload.** The running timer, last preset, custom duration, and
   chime setting persist in `localStorage` under the key `steep.v1`. Because the end
