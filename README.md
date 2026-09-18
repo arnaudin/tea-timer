@@ -2,6 +2,8 @@
 
 A quiet tea and coffee timer that flashes when the brew is ready.
 
+**Live at [ryanarnaudin.com/sites/steep/](https://ryanarnaudin.com/sites/steep/)**
+
 One HTML file, no dependencies, no build step. It is sized to stay legible when
 shoved into the corner of a screen, which is the whole reason it exists:
 
@@ -12,8 +14,11 @@ shoved into the corner of a screen, which is the whole reason it exists:
 
 ## Use it
 
-Open `index.html` in a browser. That's it — double-click the file, or serve the
-folder if you prefer a URL:
+Open [ryanarnaudin.com/sites/steep/](https://ryanarnaudin.com/sites/steep/) and
+leave the tab somewhere you can see it.
+
+To run it locally instead, open `index.html` in a browser. That's it — double-click
+the file, or serve the folder if you prefer a URL:
 
 ```bash
 python3 -m http.server 8000
@@ -103,3 +108,11 @@ strip when the window is behind something else.
 | `index.html` | The whole application |
 | `SESSION-TRAY-SPEC.md` | A spec describing one layout change, written to be handed to a sibling project |
 | `screenshots/` | Images used by this README |
+
+## Deploying
+
+The live copy is a manual copy. `index.html` is duplicated into the personal site
+repo at `sites/steep/index.html`, where Jekyll passes it through untouched because
+it has no front matter, and it is listed from `_data/experiments.yml`. The copy
+carries a header comment recording the commit it came from. After changing the
+timer here, re-copy the file and update that header, or the two will drift.
