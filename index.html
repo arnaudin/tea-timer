@@ -98,6 +98,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--leaf);outline-o
   gap:clamp(6px,2.2vmin,20px);
 }
 .top{
+  grid-row:1;
   display:flex;align-items:center;justify-content:space-between;
   color:var(--ink-2);
 }
@@ -118,6 +119,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--leaf);outline-o
 
 /* ---------- vessel: ring + clock ---------- */
 .vessel{
+  grid-row:2;
   position:relative;
   display:grid;place-items:center;
   min-height:0;
@@ -176,6 +178,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--leaf);outline-o
 
 /* ---------- tray: presets while idle, prompts while brewing ---------- */
 .tray{
+  grid-row:4;
   display:grid;
   align-items:center;
   width:100%;
@@ -200,6 +203,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--leaf);outline-o
 
 /* ---------- controls ---------- */
 .controls{
+  grid-row:3;
   display:flex;justify-content:center;align-items:center;gap:12px;
 }
 .primary{
