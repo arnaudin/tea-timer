@@ -8,6 +8,8 @@ shoved into the corner of a screen, which is the whole reason it exists:
 > A very simple timer page that flashes when time is up, so I can place it on the
 > edge/corner of screen and continue working.
 
+![The timer at rest, showing a four minute black tea steep and the preset row](screenshots/idle.png)
+
 ## Use it
 
 Open `index.html` in a browser. That's it — double-click the file, or serve the
@@ -32,6 +34,14 @@ Pick a brew, press Begin, and put the window wherever you can see it.
   chime setting persist in `localStorage` under the key `steep.v1`. Because the end
   time is stored rather than the seconds remaining, a reload mid-brew picks up where
   the clock actually is, not where the page left off.
+
+Mid-brew the presets step aside for the prompts, so the countdown never shifts:
+
+![Mid-brew in dark theme, the ring partly filled and a grounding prompt below the controls](screenshots/brewing.png)
+
+At zero the whole window flashes:
+
+![The ready state, a full-screen amber flash reading Ready](screenshots/ready.png)
 
 ### Presets
 
@@ -63,6 +73,8 @@ array near the top of the script in `index.html`. Times are in seconds.
 The layout sheds parts of itself as the window shrinks, so it survives being tucked
 into a screen corner at roughly 300×200:
 
+![Two 300 by 200 windows side by side, one idle with a scrolling preset strip and one mid-brew with a hairline progress bar](screenshots/corner.png)
+
 - Under 480px wide, preset labels shorten and durations drop away.
 - Under 400px tall, the options and prompts collapse during a brew and the
   countdown takes the space back.
@@ -90,3 +102,4 @@ strip when the window is behind something else.
 |---|---|
 | `index.html` | The whole application |
 | `SESSION-TRAY-SPEC.md` | A spec describing one layout change, written to be handed to a sibling project |
+| `screenshots/` | Images used by this README |
