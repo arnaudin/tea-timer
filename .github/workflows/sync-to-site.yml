@@ -40,7 +40,7 @@ concurrency:
 
 env:
   # Flip to "false" once a dry run looks right.
-  DRY_RUN: "true"
+  DRY_RUN: "false"
   SITE_REPO: "arnaudin/arnaudin.github.io"
   DEST: "sites/steep/index.html"
 
@@ -49,12 +49,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the timer
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: timer
 
       - name: Check out the site
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ env.SITE_REPO }}
           token: ${{ secrets.SITE_REPO_TOKEN }}
