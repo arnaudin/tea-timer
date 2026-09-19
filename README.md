@@ -111,8 +111,19 @@ strip when the window is behind something else.
 
 ## Deploying
 
-The live copy is a manual copy. `index.html` is duplicated into the personal site
-repo at `sites/steep/index.html`, where Jekyll passes it through untouched because
-it has no front matter, and it is listed from `_data/experiments.yml`. The copy
-carries a header comment recording the commit it came from. After changing the
-timer here, re-copy the file and update that header, or the two will drift.
+Pushing a change to `index.html` on `main` syncs it to the site automatically.
+`.github/workflows/sync-to-site.yml` stamps a provenance header onto a copy and
+commits it to the personal site repo at `sites/steep/index.html`, which in turn
+trips that repo's own build-and-deploy workflow. Jekyll passes the file through
+untouched because it has no front matter, and `_data/experiments.yml` lists it on
+the experiments page.
+
+The sync compares the document body and ignores the header, so a re-run on an
+unchanged timer reports no change rather than manufacturing a commit whose only
+difference is the date. It also refuses to run if the source ever grows front
+matter, and it stops before pushing if anything other than that one file differs.
+
+Two things it does not cover. The thumbnail at `images/experiments/steep.jpg` in
+the site repo is a still of the app and only needs redoing if the design changes
+noticeably; regenerate it and run that repo's `tools/optimize-images.sh`. The
+published artifact is separate and still manual.

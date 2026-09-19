@@ -1,0 +1,105 @@
+# Copy this repo's index.html into the personal site repo whenever the timer
+# changes, so ryanarnaudin.com/sites/steep/ never drifts from the source.
+#
+# SETUP (one time):
+#   1. Create a fine-grained personal access token:
+#        GitHub -> Settings -> Developer settings -> Personal access tokens ->
+#        Fine-grained tokens -> Generate new token
+#      Scope it as narrowly as it goes:
+#        Repository access : Only select repositories -> arnaudin/arnaudin.github.io
+#        Permissions       : Repository permissions -> Contents -> Read and write
+#      Contents write is the only permission this workflow needs. Nothing else.
+#   2. In THIS repo: Settings -> Secrets and variables -> Actions ->
+#      New repository secret, named SITE_REPO_TOKEN, with that token as the value.
+#   3. First run: DRY_RUN below is "true", so the job prints the diff and pushes
+#      nothing. Trigger it from the Actions tab with Run workflow, read the
+#      "What would change" step, and confirm it touches only sites/steep/index.html.
+#      Then set DRY_RUN to "false" and commit that.
+#
+# Pushing with a PAT rather than the built-in GITHUB_TOKEN means the site repo's
+# own build-and-deploy workflow DOES fire on the resulting commit, so the change
+# reaches Namecheap without another click. That workflow never pushes back, so
+# there is no loop.
+name: Sync Steep to the site
+
+on:
+  push:
+    branches: ["main"]
+    paths: ["index.html"]
+  workflow_dispatch:
+
+# This job reads this repo with the default token and writes the site repo with
+# the PAT, so no elevated default permissions are needed here.
+permissions:
+  contents: read
+
+# Never let two syncs race to push the same file.
+concurrency:
+  group: "sync-steep"
+  cancel-in-progress: false
+
+env:
+  # Flip to "false" once a dry run looks right.
+  DRY_RUN: "true"
+  SITE_REPO: "arnaudin/arnaudin.github.io"
+  DEST: "sites/steep/index.html"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the timer
+        uses: actions/checkout@v4
+        with:
+          path: timer
+
+      - name: Check out the site
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SITE_REPO }}
+          token: ${{ secrets.SITE_REPO_TOKEN }}
+          path: site
+
+      - name: Stamp the header and write the copy
+        id: copy
+        run: |
+          python3 timer/.github/scripts/sync_steep.py \
+            "timer/index.html" \
+            "site/${DEST}" \
+            "$(git -C timer rev-parse --short HEAD)"
+
+      - name: What would change
+        working-directory: site
+        run: |
+          if [ "${{ steps.copy.outputs.changed }}" != "true" ]; then
+            echo "The site copy already matches the source. Nothing to do."
+            exit 0
+          fi
+          echo "Files touched:"
+          git status --short
+          echo
+          echo "Diff:"
+          git --no-pager diff -- "${DEST}"
+          echo
+          # The checkout is clean, so exactly one path may differ. Anything else
+          # means the script wrote somewhere unexpected; stop before pushing.
+          touched="$(git status --porcelain | awk '{print $2}')"
+          if [ "$touched" != "${DEST}" ]; then
+            echo "::error::Expected only ${DEST} to change, got: ${touched}"
+            exit 1
+          fi
+
+      - name: Commit and push
+        if: steps.copy.outputs.changed == 'true' && env.DRY_RUN == 'false'
+        working-directory: site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "${DEST}"
+          git commit -m "Sync Steep from tea-timer@$(git -C ../timer rev-parse --short HEAD)"
+          git push
+
+      - name: Dry run notice
+        if: steps.copy.outputs.changed == 'true' && env.DRY_RUN != 'false'
+        run: |
+          echo "::notice::DRY_RUN is true, so nothing was pushed. Set DRY_RUN to \"false\" in this workflow to go live."
