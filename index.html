@@ -533,6 +533,21 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--leaf);outline-o
     paint(left);
   }
 
+  // ---------- wake lock (keep the screen on while brewing) ----------
+  let wakeLock=null;
+  async function syncWakeLock(){
+    if(!('wakeLock' in navigator)) return;
+    const want = state.status==='running' && !document.hidden;
+    try{
+      if(want && !wakeLock){
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', ()=>{ wakeLock=null; });
+      }else if(!want && wakeLock){
+        await wakeLock.release(); wakeLock=null;
+      }
+    }catch(e){ wakeLock=null; }
+  }
+
   // ---------- render ----------
   let lastTitle='';
   function paint(leftMs){
@@ -578,6 +593,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--leaf);outline-o
     }
     doneSub.textContent = p.name+' is ready. Take the first sip slowly.';
     doneEl.hidden = state.status!=='done';
+    syncWakeLock();
   }
 
   // ---------- grounding prompts ----------
@@ -642,7 +658,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--leaf);outline-o
     if(e.code==='Space'){ e.preventDefault(); state.status==='running' ? pause() : begin(); }
     else if(e.key==='r' || e.key==='R'){ reset(); }
   });
-  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && state.status==='running') tick(); });
+  document.addEventListener('visibilitychange', ()=>{
+    if(!document.hidden && state.status==='running') tick();
+    syncWakeLock();
+  });
 
   // ---------- boot ----------
   load();
