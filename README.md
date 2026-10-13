@@ -124,7 +124,6 @@ unchanged timer reports no change rather than manufacturing a commit whose only
 difference is the date. It also refuses to run if the source ever grows front
 matter, and it stops before pushing if anything other than that one file differs.
 
-Two things it does not cover. The thumbnail at `images/experiments/steep.jpg` in
+One thing it does not cover: the thumbnail at `images/experiments/steep.jpg` in
 the site repo is a still of the app and only needs redoing if the design changes
-noticeably; regenerate it and run that repo's `tools/optimize-images.sh`. The
-published artifact is separate and still manual.
+noticeably; regenerate it and run that repo's `tools/optimize-images.sh`.
