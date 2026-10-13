@@ -96,6 +96,8 @@ strip when the window is behind something else.
   flash still fires but the chime may stay silent.
 - **Browsers.** Modern evergreen only — it leans on `color-mix()` in OKLab and
   container queries, so roughly Safari 16.4+, Chrome 111+, Firefox 113+.
+- **The screen stays awake** while a timer is running, where the Wake Lock API is
+  available. Pausing, resetting, or finishing lets it sleep again.
 - **Themes.** Light and dark are both designed; the page follows your system
   setting.
 - **Motion.** The breathing glow and the ready flash respect
@@ -106,7 +108,6 @@ strip when the window is behind something else.
 | File | What it is |
 |---|---|
 | `index.html` | The whole application |
-| `SESSION-TRAY-SPEC.md` | A spec describing one layout change, written to be handed to a sibling project |
 | `screenshots/` | Images used by this README |
 
 ## Deploying
