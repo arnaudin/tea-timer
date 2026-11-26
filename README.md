@@ -17,7 +17,7 @@ shoved into the corner of a screen, which is the whole reason it exists:
 Open [ryanarnaudin.com/sites/steep/](https://ryanarnaudin.com/sites/steep/) and
 leave the tab somewhere you can see it.
 
-To run it locally instead, open `index.html` in a browser. That's it — double-click
+To run it locally instead, open `index.html` in a browser. That's it. Double-click
 the file, or serve the folder if you prefer a URL:
 
 ```bash
@@ -31,7 +31,7 @@ Pick a brew, press Begin, and put the window wherever you can see it.
 - **Presets** for common teas and brew methods, plus a custom duration.
 - **A steeping ring** that fills from moss to amber while the page background
   slowly warms, so progress reads from across the room without looking at digits.
-- **Grounding prompts** that fade in and out during the brew — one line at a time,
+- **Grounding prompts** that fade in and out during the brew, one line at a time,
   sixteen seconds apart.
 - **A full-viewport flash** and a synthesized singing-bowl chime at zero. Click
   anywhere or press any key to dismiss.
@@ -94,7 +94,7 @@ strip when the window is behind something else.
 - **Sound** needs a user gesture before it can play, so the chime is armed when you
   press Begin. If the page reloads mid-brew and finishes without any click, the
   flash still fires but the chime may stay silent.
-- **Browsers.** Modern evergreen only — it leans on `color-mix()` in OKLab and
+- **Browsers.** Modern evergreen only; it leans on `color-mix()` in OKLab and
   container queries, so roughly Safari 16.4+, Chrome 111+, Firefox 113+.
 - **The screen stays awake** while a timer is running, where the Wake Lock API is
   available. Pausing, resetting, or finishing lets it sleep again.
@@ -109,6 +109,7 @@ strip when the window is behind something else.
 |---|---|
 | `index.html` | The whole application |
 | `screenshots/` | Images used by this README |
+| `LICENSE` | MIT license |
 
 ## Deploying
 
@@ -127,3 +128,8 @@ matter, and it stops before pushing if anything other than that one file differs
 One thing it does not cover: the thumbnail at `images/experiments/steep.jpg` in
 the site repo is a still of the app and only needs redoing if the design changes
 noticeably; regenerate it and run that repo's `tools/optimize-images.sh`.
+
+## License
+
+MIT; see [LICENSE](LICENSE). Azeret Mono and Karla load from Google Fonts and are under
+the SIL Open Font License 1.1.
